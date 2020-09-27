@@ -47,7 +47,7 @@ export default {
     },
     defaultSize: {
       type: Number,
-      default: 100,
+      default: 0,
     },
     defaultPercent: {
       type: Number,
