@@ -62,3 +62,7 @@ Vue.component('split-pane', splitPane);
 | min-size     | paneL min-size     |            Number            |         100          |
 | max-size     | paneL max-size     |            Number            |     0 (not set)      |
 | default-size | paneL default size |            Number            |         250          |
+
+# License
+
+MIT
