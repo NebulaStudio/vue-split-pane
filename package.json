@@ -1,9 +1,9 @@
 {
-  "name": "vue-splitpane",
+  "name": "vue-splitpane-pixel",
   "description": "vue split-pane component",
-  "version": "1.0.6",
-  "repository": "https://github.com/PanJiaChen/vue-split-pane",
-  "author": "Pan <panfree23@gmail.com>",
+  "version": "1.0.0",
+  "repository": "https://github.com/NebulaStudio/vue-split-pane",
+  "author": "Rain <webrtcn@outlook.com>",
   "main": "dist/vue-split-pane.min.js",
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --hot --content-base='./demo/'",
@@ -11,7 +11,6 @@
     "build": "cross-env NODE_ENV=production webpack --progress --hide-modules"
   },
   "license": "MIT",
-  "homepage": "file:///Users/jiachenpan/www/Github/PanJiaChen.github.io/split-pane/demo/index.html",
   "devDependencies": {
     "babel-core": "^6.0.0",
     "babel-loader": "^6.0.0",

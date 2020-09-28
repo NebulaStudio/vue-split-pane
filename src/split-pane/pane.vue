@@ -14,7 +14,7 @@ export default {
     const classes = [this.$parent.split, this.className];
     return {
       classes: classes.join(' '),
-      percent: 50,
+      size: 50,
     };
   },
 };

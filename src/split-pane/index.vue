@@ -1,35 +1,18 @@
 <template>
-  <div
-    ref="splitbox"
-    :style="{ cursor, userSelect }"
-    class="vue-splitter-container clearfix"
-    @mouseup="onMouseUp"
-    @mousemove="onMouseMove"
-  >
-    <pane
-      class="splitter-pane splitter-paneL"
-      :split="split"
-      :style="{ [type]: percent + '%' }"
-    >
+  <div ref="splitbox" :style="{ cursor, userSelect }" class="vue-splitter-container clearfix" @mouseup="onMouseUp" @mousemove="onMouseMove">
+
+    <pane class="splitter-pane splitter-paneL" :split="split" :style="{ [type]: size + 'px' }">
       <slot name="paneL"></slot>
     </pane>
 
-    <resizer
-      :className="className"
-      :style="{ [resizeType]: percent + '%' }"
-      :split="split"
-      @mousedown.native="onMouseDown"
-      @click.native="onClick"
-    ></resizer>
+    <resizer :className="className" :style="{ [resizeType]: size + 'px' }" :split="split" @mousedown.native="onMouseDown" @click.native="onClick"></resizer>
 
-    <pane
-      class="splitter-pane splitter-paneR"
-      :split="split"
-      :style="{ [type]: 100 - percent + '%' }"
-    >
+    <pane class="splitter-pane splitter-paneR" :split="split" :style="{ [type]: `calc(100% - ${size}px)` }">
       <slot name="paneR"></slot>
     </pane>
+
     <div class="vue-splitter-container-mask" v-if="active"></div>
+
   </div>
 </template>
 
@@ -41,17 +24,17 @@ export default {
   name: 'splitPane',
   components: { Resizer, Pane },
   props: {
-    minPercent: {
-      type: Number,
-      default: 10,
-    },
     defaultSize: {
       type: Number,
-      default: 0,
+      default: 250,
     },
-    defaultPercent: {
+    minSize: {
       type: Number,
-      default: 50,
+      default: 100,
+    },
+    maxSize: {
+      type: Number,
+      default: 0,
     },
     split: {
       validator(value) {
@@ -74,8 +57,8 @@ export default {
     },
   },
   watch: {
-    defaultPercent(newValue, oldValue) {
-      this.percent = newValue;
+    defaultSize(newValue) {
+      this.size = newValue;
     },
   },
   data() {
@@ -83,7 +66,7 @@ export default {
       active: false,
       hasMoved: false,
       height: null,
-      percent: this.defaultPercent,
+      size: this.defaultSize,
       type: this.split === 'vertical' ? 'width' : 'height',
       resizeType: this.split === 'vertical' ? 'left' : 'top',
     };
@@ -91,8 +74,8 @@ export default {
   methods: {
     onClick() {
       if (!this.hasMoved) {
-        this.percent = 50;
-        this.$emit('resize', this.percent);
+        this.size = 200;
+        this.$emit('resize', this.size);
       }
     },
     onMouseDown() {
@@ -123,35 +106,27 @@ export default {
         }
 
         const currentPage = this.split === 'vertical' ? e.pageX : e.pageY;
-        const targetOffset =
-          this.split === 'vertical'
-            ? e.currentTarget.offsetWidth
-            : e.currentTarget.offsetHeight;
-        const percent =
-          Math.floor(((currentPage - offset) / targetOffset) * 10000) / 100;
 
-        if (percent > this.minPercent && percent < 100 - this.minPercent) {
-          this.percent = percent;
+        // const targetOffset =
+        //   this.split === 'vertical'
+        //     ? e.currentTarget.offsetWidth
+        //     : e.currentTarget.offsetHeight;
+
+        const size = currentPage - offset;
+        console.log('this.maxSize: ', this.maxSize);
+        if (size > this.minSize) {
+          if (this.maxSize > 0) {
+            if (size < (this.maxSize + offset)) {
+              this.size = size;
+            }
+          } else {
+            this.size = size;
+          }
         }
-
-        this.$emit('resize', this.percent);
+        this.$emit('resize', this.size);
         this.hasMoved = true;
       }
     },
-  },
-  mounted() {
-    this.$nextTick(() => {
-      if (this.defaultSize === 0) {
-        return;
-      }
-      const targetOffset =
-        this.split === 'vertical'
-          ? this.$refs.splitbox.offsetWidth
-          : this.$refs.splitbox.offsetHeight;
-      const percent =
-        Math.floor((this.defaultSize / targetOffset) * 10000) / 100;
-      this.percent = percent;
-    });
   },
 };
 </script>
@@ -161,7 +136,7 @@ export default {
   visibility: hidden;
   display: block;
   font-size: 0;
-  content: ' ';
+  content: " ";
   clear: both;
   height: 0;
 }
