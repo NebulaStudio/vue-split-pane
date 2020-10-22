@@ -4,7 +4,7 @@ Split-Pane-Pixel component built with vue2.0, can be split vertically or horizon
 
 Fork from https://github.com/PanJiaChen/vue-split-pane
 
-Split-Pane-Pixel only support set Pixel value.
+Split-Pane-Pixel only support set pixel value.
 
 ## [Try the demo](http://panjiachen.github.io/split-pane/demo/index.html)
 
